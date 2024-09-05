@@ -1,0 +1,156 @@
+// Variables for consistent design
+$primary-color: #3498db;
+$secondary-color: #2ecc71;
+$background-color: #f9f9f9;
+$text-color: #333;
+$error-color: #e74c3c;
+
+// Mixins for reusable styles
+@mixin transition($property) {
+    transition: $property 0.3s ease;
+}
+
+// Container styling
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: $background-color;
+    padding: 1rem;
+
+    .login-form {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        width: 100%;
+        max-width: 400px;
+        margin: auto;
+
+        .login-title {
+            color: $primary-color;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .login-form-group {
+            margin-bottom: 1rem;
+
+            .login-form-label {
+                display: block;
+                margin-bottom: 0.5rem;
+                color: $text-color;
+                font-weight: bold;
+            }
+
+            .login-form-input {
+                width: 100%;
+                padding: 0.75rem;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                color: $text-color;
+                font-size: 1rem;
+                @include transition(border);
+                box-sizing: border-box;
+                &:focus {
+                    border-color: $primary-color;
+                    outline: none;
+                }
+                
+            }
+        }
+
+        .login-button {
+            background-color: $primary-color;
+            color: #fff;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            @include transition(background-color);
+            
+
+            &:hover {
+                background-color: darken($primary-color, 10%);
+            }
+        }
+
+        .login-error {
+            color: $error-color;
+            margin-top: 1rem;
+            text-align: center;
+        }
+    }
+}
+
+// Responsive design for various screen sizes
+@media (max-width: 600px) {
+    .login-container {
+        padding: 0.5rem;
+
+        .login-form {
+            padding: 1rem;
+        }
+      
+    }
+}
+
+@media (max-width: 500px) {
+    .login-container {
+        padding: 0.5rem;
+
+        .login-form {
+            padding: 0.75rem;
+            max-width: 90%;
+        }
+    }
+}
+
+@media (max-width: 400px) {
+    .login-container {
+        padding: 0.25rem;
+
+        .login-form {
+            padding: 0.5rem;
+            max-width: 95%;
+        }
+
+        .login-title {
+            font-size: 1.25rem;
+        }
+
+        .login-form-input {
+            font-size: 0.875rem;
+        }
+
+        .login-button {
+            font-size: 0.875rem;
+        }
+    }
+}
+
+@media (max-width: 300px) {
+    .login-container {
+        padding: 0.25rem;
+
+        .login-form {
+            padding: 0.5rem;
+            max-width: 100%;
+        }
+
+        .login-title {
+            font-size: 1rem;
+        }
+
+        .login-form-input {
+            font-size: 0.75rem;
+        }
+
+        .login-button {
+            font-size: 0.75rem;
+        }
+    }
+}
