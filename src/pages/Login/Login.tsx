@@ -1,14 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Make sure to install react-router-dom
+import { useNavigate } from 'react-router-dom';
 import './Login.scss';
+import { StoreContext } from '../../services/StoreContext';
 
 function Login() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const navigate = useNavigate();
+
+  const context = useContext(StoreContext);
+
+  
+
+  const { isLoggedIn, setIsLoggedIn } = context;
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -21,7 +27,7 @@ function Login() {
       console.log('Login successful:', response.data);
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('isAdmin', response.data.isAdmin);
-      setIsLoggedIn(true);
+      setIsLoggedIn(true); // Update the context to indicate user is logged in
     } catch (error) {
       setError('Login failed. Please try again.');
       console.error('Error during login:', error);
@@ -30,11 +36,11 @@ function Login() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      const timer = setTimeout(() => {
+      // const timer = setTimeout(() => {
         navigate('/dashboard'); 
-      }, 3000); 
+      // }, 2000); 
 
-      return () => clearTimeout(timer); 
+      // return () => clearTimeout(timer); 
     }
   }, [isLoggedIn, navigate]);
 

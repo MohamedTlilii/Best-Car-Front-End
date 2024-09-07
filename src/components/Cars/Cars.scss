@@ -1,0 +1,26 @@
+// Cars.scss
+
+.car-card-container {
+  display: flex;
+  overflow-x: auto; // Enables horizontal scrolling if there are too many cards
+  gap: 1rem; // Space between cards
+  padding: 1rem; // Padding around the container
+  flex-wrap: wrap; // Prevents wrapping of cards
+}
+
+.loading-container, .error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; // Full viewport height for centering
+  text-align: center;
+}
+
+.loading-container p {
+  margin-top: 10px;
+}
+
+.error-container {
+  color: red;
+}
