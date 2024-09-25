@@ -1,0 +1,45 @@
+.radio-indicator {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  vertical-align: middle;
+}
+
+.radio-indicator.available {
+  background-color: green;
+}
+
+.radio-indicator.not-available {
+  background-color: red;
+}
+
+.custom-button {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  height: 30px;
+  width: 30px;
+}
+.custom-button:hover {
+  background-color: #218838;
+}
+.custom-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
+}
+.custom-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.card-product {
+  width: 17rem;
+}
+.card-product .card-image {
+  height: 280px;
+}/*# sourceMappingURL=CarCard.css.map */

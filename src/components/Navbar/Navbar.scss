@@ -1,0 +1,91 @@
+.custom-navbar {
+    background-color: #100e3d;
+    padding: 10px;
+
+    .navbar-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;     
+        width: 100%; 
+        .logout-mobile {
+            display: none; /* Hidden by default on larger screens */
+          }
+        .user-info {
+            display: flex;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+            margin-left: auto; 
+
+            .user-image {
+                width: 35px;
+                height: 35px;
+                border-radius: 50%;
+                border: 1px solid rgba(251, 248, 248, 0.517);
+                margin-right: 8px; 
+            }
+
+            .dropdown-icon {
+                font-size: 13px;
+                color: white;
+            }
+
+            .dropdown-menu {
+                position: absolute;
+                top: 125%;
+                right: -9px; 
+                background-color: #100e3d;
+                border: 1px solid rgba(251, 248, 248, 0.3);
+                z-index: 1000;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+                padding: 10px 0;
+                transition: opacity 0.2s ease, transform 0.2s ease;
+                opacity: 0;
+                transform: translateY(-10px);
+                visibility: hidden; 
+
+                &.show {
+                    opacity: 1;
+                    transform: translateY(0);
+                    visibility: visible; 
+                }
+
+                .dropdown-item {
+                    color: white !important;
+                    padding: 10px 15px;
+                    cursor: pointer;
+
+                    &:hover {
+                        background-color: rgba(255, 255, 255, 0.1);
+                    }
+                }
+            }
+        }
+
+        .brand-name {
+            color: white;
+            margin-left: 20px; 
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    
+    .custom-navbar {
+        // border: 2px solid rgb(74, 190, 113) ;
+        .user-info {
+            // display: none;
+            // border: 2px solid rgb(74, 190, 113) ;
+
+        
+        .dropdown-menu {
+            // display: none;
+            .dropdown-item {
+                // display: none;
+                // border: 2px solid rgb(74, 190, 113) ;
+
+            }
+        }}
+    }
+    
+}

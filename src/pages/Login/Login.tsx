@@ -3,11 +3,15 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Login.scss';
 import { StoreContext } from '../../services/StoreContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 function Login() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState<boolean>(false); 
+
   const navigate = useNavigate();
 
   const context = useContext(StoreContext);
@@ -27,20 +31,23 @@ function Login() {
       console.log('Login successful:', response.data);
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('isAdmin', response.data.isAdmin);
-      setIsLoggedIn(true); // Update the context to indicate user is logged in
+      localStorage.setItem('admin', JSON.stringify(response.data) );
+      setIsLoggedIn(true); 
     } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      const message = error.response.data.message;
+      setError(message || 'Login failed. Please try again.');
+    } else {
       setError('Login failed. Please try again.');
-      console.error('Error during login:', error);
     }
+    console.error('Error during login:', error);
+  }
   };
-
+  
   useEffect(() => {
     if (isLoggedIn) {
-      // const timer = setTimeout(() => {
         navigate('/dashboard'); 
-      // }, 2000); 
 
-      // return () => clearTimeout(timer); 
     }
   }, [isLoggedIn, navigate]);
 
@@ -59,17 +66,25 @@ function Login() {
           />
         </div>
         <div className='login-form-group'>
-          <label className='login-form-label'>Password:</label>
-          <input 
-            className='login-form-input'
-            type="password" 
-            value={password} 
-            onChange={(e) => setPassword(e.target.value)} 
-            required 
-          />
-        </div>
-        <button className='login-button' type="submit">Login</button>
+    <label className='login-form-label'>Password:</label>
+    <div style={{ position: 'relative' }}>
+      <input 
+        className='login-form-input'
+        type={showPassword ? "text" : "password"} 
+        value={password} 
+        onChange={(e) => setPassword(e.target.value)} 
+        required 
+      />
+      <span 
+        onClick={() => setShowPassword(!showPassword)} 
+        style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer' }}
+      >
+        <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+      </span>
+    </div>
+  </div>
         {error && <p className='login-error'>{error}</p>}
+        <button className='login-button' type="submit" style={{width:"337px"}}>Login</button>
       </form>
     </div>
   );

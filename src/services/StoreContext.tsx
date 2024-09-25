@@ -1,18 +1,14 @@
-import React, { useState, ReactNode } from "react";
 
-// Define the type for the context value
+import React, { useState, ReactNode, useEffect } from "react";
+
 interface StoreContextType {
   isLoggedIn: boolean;
   setIsLoggedIn: (value: boolean) => void;
-  
 }
 
-// Create the context with the default value as undefined
 export const StoreContext = React.createContext<StoreContextType>({
   isLoggedIn: false,
-  setIsLoggedIn: (v)=> {
-    
-  }
+  setIsLoggedIn: (v) => {},
 });
 
 interface AppContextProps {
@@ -20,7 +16,14 @@ interface AppContextProps {
 }
 
 export const AppContext = ({ children }: AppContextProps) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {
+    const token = localStorage.getItem('token');
+    return !!token;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('isLoggedIn', JSON.stringify(isLoggedIn));
+  }, [isLoggedIn]);
 
   return (
     <StoreContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>

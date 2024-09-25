@@ -1,55 +1,61 @@
+.card-product {
+  // border: 2px solid red;
 
+  // width: 25rem;
 
-.radio-indicator {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 1px solid #ccc;
-    vertical-align: middle;
+  .card-image {
+    padding: 10px;
+    width: 350px;
+    height: 200px;
   }
-  
-  .radio-indicator.available {
-    background-color: green;
-  }
-  
-  .radio-indicator.not-available {
-    background-color: red;
-  }
-  
 
-.custom-button {
-    background-color: #28a745; // Replace with your desired color
-    color: #fff;
-    border: none;
-    // padding:  1rem; // Adjust padding as needed
-    // font-size: 0.875rem; // Adjust font size as needed
-    border-radius: 0.25rem; // Adjust border radius as needed
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    height: 30px;
-    width:  30px;
-  
-    &:hover {
-      background-color: #218838; // Darker shade for hover effect
-    }
-  
-    &:focus {
-      outline: none;
-      box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.5); // Adjust shadow as needed
-    }
-  
-    &:disabled {
-      background-color: #6c757d;
-      cursor: not-allowed;
-    }
-  }
-  .card-product {
-    width: 17rem;
+  @media (max-width: 1427px) {
+    width: 19rem;
+
     .card-image {
-      // width: 200px;
-      height: 280px;
+      width: 290px;
+      height: 190px;
+    }
+
+
+  }
+
+  @media (max-width: 1280px) {
+    width: 18rem;
+
+    .card-image {
+      width: 280px;
+      height: 180px;
+    }
+
+
+  }
+
+  @media (max-width: 1200px) {
+    width: 17rem;
+
+    .card-image {
+      width: 270px;
+      height: 170px;
     }
   }
 
-  
+  @media (max-width: 1077px) {
+    width: 16rem;
+
+    .card-image {
+      width: 250px;
+      height: 160px;
+    }
+  }
+
+  @media (max-width: 992px) {
+    width: 20rem;
+
+    .card-image {
+      width: 300px;
+      height: 200px;
+    }
+  }
+
+}

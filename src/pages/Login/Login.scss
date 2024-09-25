@@ -1,35 +1,27 @@
-// Variables for consistent design
-$primary-color: #3498db;
-$secondary-color: #2ecc71;
-$background-color: #f9f9f9;
-$text-color: #333;
-$error-color: #e74c3c;
 
-// Mixins for reusable styles
 @mixin transition($property) {
     transition: $property 0.3s ease;
 }
 
-// Container styling
 .login-container {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: $background-color;
+    // background-color: #3498db;
     padding: 1rem;
 
     .login-form {
-        background: #fff;
+        background: #0f0f0f22;
         border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.69);
         padding: 2rem;
         width: 100%;
         max-width: 400px;
         margin: auto;
 
         .login-title {
-            color: $primary-color;
+            color: #3498db;
             margin-bottom: 1rem;
             text-align: center;
             font-size: 1.5rem;
@@ -41,7 +33,7 @@ $error-color: #e74c3c;
             .login-form-label {
                 display: block;
                 margin-bottom: 0.5rem;
-                color: $text-color;
+                color: #333;
                 font-weight: bold;
             }
 
@@ -50,12 +42,12 @@ $error-color: #e74c3c;
                 padding: 0.75rem;
                 border: 1px solid #ddd;
                 border-radius: 4px;
-                color: $text-color;
+                color: #333;
                 font-size: 1rem;
                 @include transition(border);
                 box-sizing: border-box;
                 &:focus {
-                    border-color: $primary-color;
+                    border-color: #3498db;
                     outline: none;
                 }
                 
@@ -63,30 +55,29 @@ $error-color: #e74c3c;
         }
 
         .login-button {
-            background-color: $primary-color;
+            background-color: #3498db;
             color: #fff;
             border: none;
             padding: 0.75rem;
             border-radius: 4px;
             font-size: 1rem;
             cursor: pointer;
-            @include transition(background-color);
+            @include transition(#3498db);
             
 
             &:hover {
-                background-color: darken($primary-color, 10%);
+                background-color: darken(#3498db, 10%);
             }
         }
 
         .login-error {
-            color: $error-color;
+            color: #e74c3c;
             margin-top: 1rem;
             text-align: center;
         }
     }
 }
 
-// Responsive design for various screen sizes
 @media (max-width: 600px) {
     .login-container {
         padding: 0.5rem;

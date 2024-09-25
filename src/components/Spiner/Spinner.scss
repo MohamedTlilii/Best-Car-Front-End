@@ -1,20 +1,19 @@
-// Spinner.scss
-
 .spinner-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh; // Full viewport height for centering
+    height: 100vh; 
     text-align: center;
   }
   
   .spinner {
+    
     border: 4px solid rgba(0, 0, 0, 0.1);
     border-radius: 50%;
-    border-top: 4px solid #3498db;
-    width: 40px;
-    height: 40px;
+    border-top: 4px solid #21814f;
+    width: 60px;
+    height: 60px;
     animation: spin 1s linear infinite;
   }
   

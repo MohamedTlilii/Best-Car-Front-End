@@ -1,61 +1,68 @@
-import React, { useContext, useEffect, useState } from 'react';
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import { Link } from 'react-router-dom';
+import React, { useContext, useEffect, useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { StoreContext } from '../../services/StoreContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import './Navbar.scss';
 
-function BasicExample() {
+function CustomNavbar() {
   const context = useContext(StoreContext);
+  const { isLoggedIn, setIsLoggedIn } = context;
+  const [userDetails, setUserDetails] = useState<{ username: string; image: string } | null>(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const navigate = useNavigate();
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
 
-
-  const { isLoggedIn, setIsLoggedIn } = context ;
-  const [isAdmin, setIsAdmin] = useState<boolean>(false);
-
-  // Check localStorage for token and admin status on component mount
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const adminStatus = localStorage.getItem('isAdmin') === 'true';
-
-    if (token && adminStatus) {
-      setIsAdmin(true); // Set admin status if token and isAdmin are valid
-    } else {
-      setIsAdmin(false);
+    const userDetailsFromStorage = JSON.parse(localStorage.getItem('admin') || '{}');
+    if (userDetailsFromStorage.username && userDetailsFromStorage.image) {
+      setUserDetails(userDetailsFromStorage);
     }
-  }, [isLoggedIn]); // Re-run whenever `isLoggedIn` changes
+  }, [isLoggedIn]);
 
-  const handleLoginLogout = () => {
-    if (isLoggedIn) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('isAdmin');
-    }
-
-    setIsLoggedIn(!isLoggedIn); // Toggle login state
+  const handleLogout = () => {
+    localStorage.clear();
+    setIsLoggedIn(false);
+    setUserDetails(null);
+    navigate('/');
   };
 
+  const toggleDropdown = () => {
+    setDropdownOpen(prev => !prev);
+  };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      setDropdownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
-      <Container>
-        <Navbar.Brand >React-Bootstrap</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            {/* Only show "Dashboard" link if user is logged in and isAdmin */}
-            {isLoggedIn && isAdmin && (
-              <Nav.Link as={Link} to="/dashboard">Dashboard</Nav.Link>
-            )}
-          </Nav>
-          <Nav className="ms-auto">
-            {isLoggedIn ? (
-              <Nav.Link as={Link} to="/" onClick={handleLoginLogout}>Logout</Nav.Link>
-            ) : (
-              <Nav.Link as={Link} to="/">Login</Nav.Link>
-            )}
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+    <nav className={`custom-navbar ${dropdownOpen ? 'expanded' : ''}`}>
+      <div className="navbar-content">
+        {isLoggedIn ? (
+          <div className="user-info" onClick={toggleDropdown} ref={dropdownRef}>
+            <img src={userDetails?.image} alt="Admin" className="user-image" />
+            <FontAwesomeIcon icon={faChevronDown} className="dropdown-icon" />
+            <div className={`dropdown-menu ${dropdownOpen ? 'show' : ''}`}>
+              <div className="dropdown-item" onClick={handleLogout}>
+                Logout
+              </div>
+            </div>
+          </div>
+        ) : (
+          <h4 className="brand-name">Best-Car</h4>
+        )}
+      </div>
+    </nav>
   );
 }
 
-export default BasicExample;
+export default CustomNavbar;

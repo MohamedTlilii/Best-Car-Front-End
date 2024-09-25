@@ -1,280 +1,166 @@
-import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
+import { useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
+import {  Toast } from 'react-bootstrap';
 import axios from 'axios';
-import './CarCard.scss'; // Import custom CSS file
+import './CarCard.scss';
+import Spinner from '../Spiner/Spinner';
+import { Link } from 'react-router-dom';
+
+interface Car {
+  id: number; 
+  productname: string;
+  image: string[]; 
+  price: number; 
+  disponibilite: string;
+  carrosserie: string;
+  garantie: number; 
+  nombredeplaces: number; 
+  nombredeportes: number; 
+  nombredecylindres: number;
+  energie: string; 
+  puissancefiscale: number; 
+  puissancechdin: number; 
+  couple: number; 
+  cylindree: number; 
+  boite: string; 
+  nombrederapports: number; 
+  transmission: string; 
+  longueur: number; 
+  largeur: number; 
+  hauteur: number; 
+  volumeducoffre: number; 
+  kmh: number; 
+  vitessemaxi: number;
+  consommationurbaine: number;
+  consommationextraurbaine: number;
+  consommationmixte: number;
+  emissionsdec: number;
+  abs: string;
+  airbags: string;
+  alarmeantivol: string;
+  allumageautomatiquedesfeux: string;
+  antidemarragelectronique: string;
+  controledepressiondespneus: string;
+  antipatinage: string;
+  aideaumaintiendanslavoie: string;
+  aideaustationnement: string;
+  detecteurdefatigue: string;
+  directionassistee: string;
+  regulateurdevitesse: string;
+  limiteurdevitesse: string; 
+  baguettesexterieuresdencadrementdesvitres: string; 
+  elementsexterieurscouleurcarrosserie: string;
+  feuxaled: string; 
+  jantes: string; 
+  phares: string; 
+  autoradio: string; 
+  connectivite: string;
+  ecrancentral: number; 
+  accoudoirs: string; 
+  cieldepavillon: string; 
+  lumieresdambiance: string; 
+  sellerie: string; 
+  seuilsdeportes: string; 
+  siegesreglablesenhauteur: string;
+  tapisdesol: string; 
+  volant: string; 
+  volantreglable: string; 
+  climatisation: string; 
+  detecteurdepluie: string; 
+  fermeturecentralisee: string; 
+  freindestationnement: string; 
+  ordinateurdebord: string; 
+  retroviseursexterieurs: string;
+  retroviseurinterieur: string; 
+  vitreselectriques: string; 
+  isActive: boolean; 
+  events?: Event[]; 
+}
+
+
 
 interface CarCardProps {
-  car: {
-    id: number;
-    name: string;
-    description: string;
-    brand: string;
-    model: string;
-    year: number;
-    price: number;
-    color: string;
-    mileage: number;
-    isAvailable: boolean;
-    isActive: boolean;
-    image: string | null; // Handle image as string or null
-  };
-  onUpdate: (updatedCar: any) => void;
-  onDelete: (id: number) => void;
+  car: Car;
 }
 
-interface FormDataType {
-  name: string;
-  description: string;
-  brand: string;
-  model: string;
-  year: number;
-  price: number;
-  color: string;
-  mileage: number;
-  isAvailable: boolean;
-  image: File | string;
-}
-
-function CarCard({ car, onUpdate, onDelete }: CarCardProps) {
-  const [showModal, setShowModal] = useState(false);
-  const [imagePreview, setImagePreview] = useState<string | null>(car.image ? `http://localhost:3000/${car.image.replace(/\\/g, '/')}` : null);
+function CarCard({ car }: CarCardProps) {
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const token = localStorage.getItem('token');
 
-  const [formData, setFormData] = useState<FormDataType>({
-    name: car.name,
-    description: car.description,
-    brand: car.brand,
-    model: car.model,
-    year: car.year,
-    price: car.price,
-    color: car.color,
-    mileage: car.mileage,
-    isAvailable: car.isAvailable,
-    image: car.image || '', // Handle case where image might be null
-  });
-
-  const handleShow = () => setShowModal(true);
-  const handleClose = () => setShowModal(false);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { id, value, type, checked, files } = e.target as HTMLInputElement;
-
-    if (type === 'file' && files?.length) {
-      const file = files[0];
-      setFormData(prevData => ({
-        ...prevData,
-        [id]: file
-      }));
-      setImagePreview(URL.createObjectURL(file));
-    } else {
-      setFormData(prevData => ({
-        ...prevData,
-        [id]: type === 'checkbox' ? checked : value
-      }));
-    }
-  };
-
-  const handleSaveChanges = async () => {
-    try {
-      console.log('FormData before sending:', formData); // Debug log
-
-      const form = new FormData();
-      (Object.keys(formData) as Array<keyof FormDataType>).forEach(key => {
-        const value = formData[key];
-        if (value instanceof File) {
-          form.append(key, value);
+  useEffect(() => {
+    axios
+      .get('http://localhost:3000/car/getcars', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        if (Array.isArray(response.data.cars)) {
         } else {
-          form.append(key, value.toString());
+          setError('Data received is not an array');
         }
+        setLoading(false);
+      })
+      .catch((error) => {
+        setError('Error fetching car data');
+        setLoading(false);
       });
+  }, [token]);
 
-      const response = await axios.patch(`http://localhost:3000/car/updatecar/${car.id}`, form, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${token}`
-        },
-      });
-
-      console.log('Response from server:', response);
-
-      if (response.data && response.data.car) {
-        onUpdate(response.data.car);
-      } else {
-        console.error('Unexpected response structure:', response.data);
-      }
-
-      handleClose();
-    } catch (error) {
-      console.error('Error updating car data:', error);
-    }
-  };
-
-  const handleDelete = async () => {
-    try {
-      await axios.delete(`http://localhost:3000/car/removecar/${car.id}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
-      });
-
-      onDelete(car.id);
-    } catch (error) {
-      console.error('Error deleting car data:', error);
-    }
-  };
+  if (loading) return <Spinner />;
+  
+  if (error) {
+    return (
+      <div className="error-container">
+        <p>Error: {error}</p>
+      </div>
+    );
+  }
 
   return (
-    <Card className='card-product'>
-      <Card.Img className='card-image'
-        variant="top" 
-        src={car.image ? `http://localhost:3000/${car.image.replace(/\\/g, '/')}` : 'default-image-url'} 
-        alt={car.name} 
-      />  
-      <Card.Body>
-        <Card.Title>{car.name}</Card.Title>
-        <Card.Subtitle className="mb-2 text-muted">{`${car.brand} ${car.model} (${car.year})`}</Card.Subtitle>
-        <Card.Text>
-          {car.description}
-          <br />
-          <strong>Price:</strong> ${car.price}
-          <br />
-          <strong>Color:</strong> {car.color}
-          <br />
-          <strong>Mileage:</strong> {car.mileage} miles
-          <br />
-          <strong>Available:</strong> 
-          <span className={`radio-indicator ${car.isAvailable ? 'available' : 'not-available'}`}></span>
-        </Card.Text>
-        <div className="d-flex justify-content-between">
-          <Button variant="primary" className="me-2" onClick={handleShow}>Edit</Button>
-          <Button variant="danger" onClick={handleDelete}>Delete</Button>
-        </div>
-      </Card.Body>
+    <>
+      <div className="card-product">
+      <Link className='linkkkk' to={`/dashboard/car/${car.id}`}>
+        <img
+          className="card-image"
+          src={
+            car.image.length > 0
+              ? `http://localhost:3000/${car.image[0].replace(/\\/g, '/')}`
+              : 'default-image-url'
+          }
+          alt={car.productname}
+        />
+        </Link>
+        <Card.Body>
+          <Card.Title>
+          <Link className='linkkkk' to={`/dashboard/car/${car.id}`}>
+  {car.productname}
+</Link>
 
-      <Modal show={showModal} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Edit Car</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group className="mb-3">
-              <Form.Label>Car Name</Form.Label>
-              <Form.Control
-                type="text"
-                id="name"
-                value={formData.name}
-                onChange={handleChange}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Description</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                id="description"
-                value={formData.description}
-                onChange={handleChange}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Brand</Form.Label>
-              <Form.Control
-                type="text"
-                id="brand"
-                value={formData.brand}
-                onChange={handleChange}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Model</Form.Label>
-              <Form.Control
-                type="text"
-                id="model"
-                value={formData.model}
-                onChange={handleChange}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Year</Form.Label>
-              <Form.Control
-                type="number"
-                id="year"
-                value={formData.year}
-                onChange={handleChange}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Price</Form.Label>
-              <Form.Control
-                type="number"
-                id="price"
-                value={formData.price}
-                onChange={handleChange}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Color</Form.Label>
-              <Form.Control
-                type="text"
-                id="color"
-                value={formData.color}
-                onChange={handleChange}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Mileage</Form.Label>
-              <Form.Control
-                type="number"
-                id="mileage"
-                value={formData.mileage}
-                onChange={handleChange}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Image</Form.Label>
-              <Form.Control
-                type="file"
-                id="image"
-                onChange={handleChange}
-              />
-              {imagePreview && (
-                <img
-                  src={imagePreview}
-                  alt="Preview"
-                  style={{ maxWidth: '100%', marginTop: '10px' }}
-                />
-              )}
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Available</Form.Label>
-              <div className="d-flex align-items-center">
-                <Form.Check
-                  type="checkbox"
-                  id="isAvailable"
-                  label="Available"
-                  checked={formData.isAvailable}
-                  onChange={handleChange}
-                />
-                <div 
-                  className={`radio-indicator ms-2 ${formData.isAvailable ? 'available' : 'not-available'}`}
-                />
-              </div>
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleSaveChanges}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </Card>
+            </Card.Title>
+          {/* {car.price} DT */}
+        </Card.Body>
+      </div>
+
+      {/* Toast notification */}
+      <Toast
+        style={{
+          position: 'fixed',
+          top: '10px',
+          right: '10px',
+          zIndex: 9999,
+        }}
+        onClose={() => setShowToast(false)}
+        show={showToast}
+        delay={3000}
+        autohide
+      >
+        <Toast.Body>{toastMessage}</Toast.Body>
+      </Toast>
+    </>
   );
 }
 

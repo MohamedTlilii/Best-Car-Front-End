@@ -1,0 +1,81 @@
+.dashboard-container {
+  display: flex;
+  flex-wrap: nowrap;
+}
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column;
+  }
+}
+
+.sidebar {
+  width: 350px;
+  background-color: #f4f4f4;
+  padding: 20px;
+  height: auto;
+  border-right: 1px solid #ccc;
+  transition: all 0.3s ease-in-out;
+}
+@media (max-width: 1200px) {
+  .sidebar {
+    width: 200px;
+  }
+}
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid #ccc;
+  }
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar ul li {
+  cursor: pointer;
+  padding: 10px 0;
+  color: #333;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.sidebar ul li:hover {
+  background-color: #ddd;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 20px;
+  width: 1950px;
+}
+@media (max-width: 1200px) {
+  .content {
+    padding: 15px;
+  }
+}
+@media (max-width: 768px) {
+  .content {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar ul li {
+    padding: 8px 0;
+  }
+  .sidebar ul li:hover {
+    background-color: #ccc;
+  }
+}
+@media (max-width: 576px) {
+  .sidebar {
+    padding: 10px;
+  }
+  .content {
+    padding: 8px;
+  }
+}/*# sourceMappingURL=Dashboard.css.map */

@@ -1,0 +1,50 @@
+.admin-container {
+  height: 105vh;
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+p {
+  margin-bottom: 20px;
+  color: #666;
+}
+
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+.user-table th, .user-table td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+.user-table th {
+  background-color: #f1f1f1;
+}
+.user-table td select {
+  padding: 5px;
+}
+.user-table td button {
+  margin-right: 5px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.user-table td button:first-of-type {
+  background-color: #4caf50;
+  color: #fff;
+}
+.user-table td button:last-of-type {
+  background-color: #f44336;
+  color: #fff;
+}/*# sourceMappingURL=Admin.css.map */

@@ -1,87 +1,130 @@
+
 .dashboard-container {
-    display: flex;
-    flex-wrap: nowrap;
-    
-    @media (max-width: 768px) {
-      flex-direction: column; /* Stack the sidebar and content on top of each other on smaller screens */
-    }
+  display: flex;
+  flex-wrap: nowrap;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
   }
-  
+
   .sidebar {
-    // border: 2px solid red;
-    width: 250px;
-    background-color: #f4f4f4;
+    width: 350px; 
+    background-color: #100e3d;
     padding: 20px;
     height: auto;
-    border-right: 1px solid #ccc;
     transition: all 0.3s ease-in-out;
-  
-    @media (max-width: 1200px) {
-      width: 200px; /* Slightly smaller on medium devices */
+
+    h3 {
+      color: white;
+      font-size: 20px;
     }
-  
+
     @media (max-width: 768px) {
-      width: 100%; /* Full width on smaller screens */
-      height: auto; /* Auto height on mobile */
-      border-right: none; /* Remove the border on smaller screens */
-      border-bottom: 1px solid #ccc; /* Add a bottom border instead */
+      display: none; 
+      opacity: 0; 
+      transform: translateX(-100%); 
+      transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
     }
   }
-  
+
+  .sidebar.visible {
+    display: block; 
+    opacity: 1; 
+    transform: translateX(0); 
+
+  }
+
+  @media (max-width: 768px) {
+    .sidebar.visible {
+      // border: 2px solid red;
+      width: auto;
+    }
+  }
+
+  .sidebar.hidden {
+    display: none; 
+
+  }
+
   .sidebar ul {
     list-style: none;
     padding: 0;
+    margin: 0;
+
+    li {
+      cursor: pointer;
+      color: #333;
+      transition: background-color 0.3s ease-in-out;
+      margin: 10px 0;
+
+      &:hover {
+        background-color: #130e71d6; 
+      }
+    }
   }
-  
-  .sidebar ul li {
-    cursor: pointer;
-    padding: 10px 0;
-    color: #333;
-  }
-  
-  .sidebar ul li:hover {
-    background-color: #ddd;
-  }
-  
+
   .content {
     flex-grow: 1;
     padding: 20px;
-  
-    @media (max-width: 768px) {
-      padding: 10px; /* Reduce padding on smaller screens */
-    }
-  }
-  
-  /* Adjust content padding for smaller screens */
-  @media (max-width: 1200px) {
-    .content {
+    width: 100%;
+
+    @media (max-width: 1200px) {
       padding: 15px;
     }
-  }
-  
-  /* Mobile-specific adjustments */
-  @media (max-width: 768px) {
-    .sidebar ul li {
-      padding: 8px 0; /* Slightly smaller padding for mobile */
-    }
-  
-    .sidebar ul li:hover {
-      background-color: #ccc; /* Slightly darker hover effect on mobile */
-    }
-  
-    .content {
-      flex-grow: 1;
+
+    @media (max-width: 768px) {
+      padding: 10px;
     }
   }
-  
-  /* Extra small devices */
+
+  .linkkkk {
+    display: inline-block;
+    width: 100%;
+    padding: 8px;
+    text-decoration: none;
+    color: white;
+    transition: color 0.3s ease-in-out;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.5;
+
+    .fa-icon {
+      margin-right: 8px;
+      color: white;
+    }
+  }
+
+  .toggle-button {
+    display: none;
+    position: absolute;
+    top: 1px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 27px; 
+    margin: 10px; 
+
+    @media (max-width: 768px) {
+      display: block; 
+    }
+  }
+
   @media (max-width: 576px) {
     .sidebar {
       padding: 10px;
     }
-  
+
     .content {
       padding: 8px;
     }
   }
-  
+}
+
+@media (max-width: 576px) {
+  .sidebar {
+    // border: 2px solid red; // Optional: for debugging
+  }
+}

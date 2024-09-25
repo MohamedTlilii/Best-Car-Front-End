@@ -1,0 +1,25 @@
+.car-card-container {
+  justify-content: center;
+  display: flex;
+  overflow-x: auto;
+  gap: 2rem;
+  padding: 1rem;
+  flex-wrap: wrap;
+}
+
+.loading-container, .error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+}
+
+.loading-container p {
+  margin-top: 10px;
+}
+
+.error-container {
+  color: red;
+}/*# sourceMappingURL=Cars.css.map */
